@@ -6,6 +6,9 @@ import org.apache.hadoop.hive.metastore.HiveMetaException;
 import org.apache.hadoop.hive.metastore.conf.MetastoreConf;
 import org.apache.hadoop.hive.metastore.tools.HiveSchemaHelper;
 import org.apache.hadoop.hive.metastore.tools.MetastoreSchemaTool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,9 +30,16 @@ public class HiveHealthCheck {
     String DBUserPassword ;
     String HiveSchemaName;
     Configuration conf;
+
+
+
+
+
     public HiveHealthCheck() throws Exception {
-        System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
-        MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
+        //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
+        String hiveHome = System.getenv("HIVE_HOME");
+        System.out.println("HIVE_HOME:"+hiveHome);
+        MetastoreSchemaTool.homeDir =hiveHome;
        // System.setProperty("HIVE_HOME", "/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin");
         //MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
