@@ -26,8 +26,10 @@ public class HiveHealthCheck {
     String HiveSchemaName;
     Configuration conf;
     public HiveHealthCheck(){
-        System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
-        MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
+        //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
+        //MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
+
+        MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
         try {
             userName = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.CONNECTION_USER_NAME, conf);
