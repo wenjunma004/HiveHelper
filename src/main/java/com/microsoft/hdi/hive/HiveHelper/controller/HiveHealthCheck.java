@@ -28,9 +28,8 @@ public class HiveHealthCheck {
     String HiveSchemaName;
     Configuration conf;
     public HiveHealthCheck() throws Exception {
-        //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
-        //MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
-        //System.set("HIVE_CONF_DIR", "C:\\Users\\wenjm\\project\\HiveHelper\\conf");
+        System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
+        MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
        // System.setProperty("HIVE_HOME", "/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin");
         //MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
@@ -83,6 +82,7 @@ public class HiveHealthCheck {
         }else{
             finalResponse.setCode(response.getCode());
             finalResponse.setMsg("Hive Metastore existed");
+            System.out.println("Hive Metastore existed  NO need init !!");
         }
         return finalResponse;
     }
@@ -128,7 +128,7 @@ public class HiveHealthCheck {
             ResultSet rs = stmt.executeQuery(SQL);
             while(rs.next()){
                 String tableName = rs.getString(1);
-                System.out.println(tableName);
+                System.out.println("table name: " + tableName);
                 numberOfTable++;
             }
         } catch (HiveMetaException e) {
