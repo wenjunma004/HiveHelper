@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.Map;
 
 @Controller
 public class HiveHealthCheck {
@@ -25,13 +27,12 @@ public class HiveHealthCheck {
     String DBUserPassword ;
     String HiveSchemaName;
     Configuration conf;
-    public HiveHealthCheck(){
+    public HiveHealthCheck() throws Exception {
         //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
         //MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
-
-        System.setProperty("HIVE_CONF_DIR", "/home/wenjm/poc/HiveHelper/conf");
-        System.setProperty("HIVE_HOME", "/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin");
-        MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
+        //System.set("HIVE_CONF_DIR", "C:\\Users\\wenjm\\project\\HiveHelper\\conf");
+       // System.setProperty("HIVE_HOME", "/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin");
+        //MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
         try {
             userName = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.CONNECTION_USER_NAME, conf);
@@ -147,6 +148,7 @@ public class HiveHealthCheck {
         int result = MetastoreSchemaTool.run(arg);
         return new HiveResponse(result,"check log to get more detail");
     }
+
 
 
 }
