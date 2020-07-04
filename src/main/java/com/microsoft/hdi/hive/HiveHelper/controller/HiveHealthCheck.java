@@ -29,7 +29,7 @@ public class HiveHealthCheck {
         //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
         //MetastoreSchemaTool.homeDir ="C:\\Users\\wenjm\\apache-hive-3.1.2-bin";
 
-        System.setProperty("HIVE_CONF_DIR", "/home/wenjm/poc/HiveHelper");
+        System.setProperty("HIVE_CONF_DIR", "/home/wenjm/poc/HiveHelper/conf");
         MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
         try {
