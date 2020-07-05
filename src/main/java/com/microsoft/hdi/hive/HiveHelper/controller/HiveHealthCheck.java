@@ -59,7 +59,7 @@ public class HiveHealthCheck {
          */
         DBUser = "root";
         DBUserPassword = "root";
-        HiveSchemaName = "hive2";
+        HiveSchemaName = "hive";
 
         initMetastoreEnv();
 
