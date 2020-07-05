@@ -103,7 +103,8 @@ public class HiveHealthCheck {
         String[] urlArrays = url.split("/");
         if(urlArrays != null && urlArrays.length >3){
             String dbURL = urlArrays[0] + "/" + urlArrays[1] +"/" + urlArrays[2];
-            System.out.println(dbURL);
+            System.out.println("dbURL:" + dbURL);
+            System.out.println("create DB with schame Name:" + HiveSchemaName);
             String[] arg = {"schemaTool","-createUser","-dbType",dbType,"-hiveUser",userName,"-hivePassword",
                     password,"-hiveDb",HiveSchemaName, "-userName",DBUser,"-passWord",DBUserPassword,"-url",dbURL};
             int result = MetastoreSchemaTool.run(arg);
