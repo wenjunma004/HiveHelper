@@ -142,6 +142,8 @@ public class HiveHealthCheck {
                 System.out.println("table name: " + tableName);
                 numberOfTable++;
             }
+            conn.close();
+
         } catch (HiveMetaException e) {
             e.printStackTrace();
             return new HiveResponse(-1,e.getMessage());
