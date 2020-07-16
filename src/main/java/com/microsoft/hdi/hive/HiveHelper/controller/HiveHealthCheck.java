@@ -6,17 +6,13 @@ import org.apache.hadoop.hive.metastore.HiveMetaException;
 import org.apache.hadoop.hive.metastore.conf.MetastoreConf;
 import org.apache.hadoop.hive.metastore.tools.HiveSchemaHelper;
 import org.apache.hadoop.hive.metastore.tools.MetastoreSchemaTool;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.Map;
+
 
 @Controller
 public class HiveHealthCheck {
@@ -32,33 +28,26 @@ public class HiveHealthCheck {
     Configuration conf;
 
 
-
-
-
     public HiveHealthCheck() throws Exception {
-        //System.setProperty("hadoop.home.dir", "C:\\Users\\wenjm\\tool");
         String hiveHome = System.getenv("HIVE_HOME");
-        System.out.println("HIVE_HOME:"+hiveHome);
         MetastoreSchemaTool.homeDir =hiveHome;
-       // System.setProperty("HIVE_HOME", "/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin");
-        //MetastoreSchemaTool.homeDir ="/home/wenjm/poc/HiveHelper/apache-hive-3.1.2-bin";
         conf = MetastoreConf.newMetastoreConf();
         try {
             userName = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.CONNECTION_USER_NAME, conf);
             password = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.PWD, conf);
             url = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.CONNECT_URL_KEY, conf);
             driver = HiveSchemaHelper.getValidConfVar(MetastoreConf.ConfVars.CONNECTION_DRIVER, conf);
-            if("com.mysql.jdbc.Driver".equals(driver)){
-                dbType = "mysql";
-            }
+            dbType = "mssql";
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         /**
          * read from security config map
          */
-        DBUser = "root";
-        DBUserPassword = "root";
+
+        DBUser = "SA";
+        DBUserPassword = "$Amsung762";
         HiveSchemaName = "hive";
 
         initMetastoreEnv();
@@ -100,18 +89,16 @@ public class HiveHealthCheck {
     @RequestMapping("/createHiveDB")
     @ResponseBody
     private HiveResponse createHiveDB() {
-        String[] urlArrays = url.split("/");
-        if(urlArrays != null && urlArrays.length >3){
-            String dbURL = urlArrays[0] + "/" + urlArrays[1] +"/" + urlArrays[2];
+            String dbURL = "jdbc:sqlserver://mssql;trustServerCertificate=true;encrypt=false;";
             System.out.println("dbURL:" + dbURL);
             System.out.println("create DB with schame Name:" + HiveSchemaName);
             String[] arg = {"schemaTool","-createUser","-dbType",dbType,"-hiveUser",userName,"-hivePassword",
                     password,"-hiveDb",HiveSchemaName, "-userName",DBUser,"-passWord",DBUserPassword,"-url",dbURL};
             int result = MetastoreSchemaTool.run(arg);
             return new HiveResponse(result,"check log to get more detail");
-        }else{
-            return new HiveResponse(-1,"can not get db connection URL");
-        }
+//        }else{
+//            return new HiveResponse(-1,"can not get db connection URL");
+//        }
 
 
     }
@@ -157,7 +144,7 @@ public class HiveHealthCheck {
     @RequestMapping("/initSchema")
     @ResponseBody
     private HiveResponse initSchema() {
-        String[] arg = {"schemaTool","-dbType","mysql","--initSchema"};
+        String[] arg = {"schemaTool","-dbType",dbType,"--initSchema"};
         int result = MetastoreSchemaTool.run(arg);
         return new HiveResponse(result,"check log to get more detail");
     }
