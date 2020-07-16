@@ -121,7 +121,10 @@ public class HiveHealthCheck {
         int numberOfTable = 0;
         try {
             Connection conn = HiveSchemaHelper.getConnectionToMetastore(userName,password,url,driver,false,conf,HiveSchemaName);
-            String SQL = "show tables";
+            String SQL = "SELECT\n" +
+                    "  TABLE_NAME\n" +
+                    "FROM\n" +
+                    "  INFORMATION_SCHEMA.TABLES;";
             Statement stmt = conn.createStatement( );
             ResultSet rs = stmt.executeQuery(SQL);
             while(rs.next()){
